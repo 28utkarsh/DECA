@@ -68,6 +68,8 @@ def main(args):
         if args.saveKpt:
             np.savetxt(os.path.join(savefolder, name, name + '_kpt2d.txt'), opdict['landmarks2d'][0].cpu().numpy())
             np.savetxt(os.path.join(savefolder, name, name + '_kpt3d.txt'), opdict['landmarks3d'][0].cpu().numpy())
+            # np.savetxt(os.path.join(savefolder, name, name + '_flame_kpt3d.txt'), opdict['flame_topology_landmarks'][0])
+            np.save(os.path.join(savefolder, name, name + '_flame_kpt3d.npy'), opdict['flame_topology_landmarks'])
         if args.saveObj:
             deca.save_obj(os.path.join(savefolder, name, name + '.obj'), opdict)
         if args.saveMat:

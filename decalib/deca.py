@@ -164,6 +164,17 @@ class DECA(nn.Module):
         
         ## decode
         verts, landmarks2d, landmarks3d = self.flame(shape_params=codedict['shape'], expression_params=codedict['exp'], pose_params=codedict['pose'])
+        landmarks3d_clone = landmarks3d.clone().cpu().numpy()
+        landmarks_flame_clone = np.copy(landmarks3d_clone)[0][[36, 39, 42, 45, 33, 48, 54], :]
+        # import pdb;
+        # # pdb.set_trace()
+        # with open('landmark.txt', 'w') as writer:
+        #     for point_idx in range(landmarks3d_clone[0].shape[0]):
+        #         point = list(map(str, landmarks3d_clone[0][point_idx].tolist())) + [str(point_idx)]
+        #         writer.write(" ".join(point) + "\n")
+
+
+
         if self.cfg.model.use_tex:
             albedo = self.flametex(codedict['tex'])
         else:
@@ -176,6 +187,7 @@ class DECA(nn.Module):
         trans_verts = util.batch_orth_proj(verts, codedict['cam']); trans_verts[:,:,1:] = -trans_verts[:,:,1:]
         opdict = {
             'verts': verts,
+            'flame_topology_landmarks' : landmarks_flame_clone,
             'trans_verts': trans_verts,
             'landmarks2d': landmarks2d,
             'landmarks3d': landmarks3d,
